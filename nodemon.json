@@ -1,0 +1,7 @@
+{
+    "env": {
+        "PASSWORD": "placeholderpassword",
+        "MAILGUN_APIKEY": "c0d7674031429f3fef36ba4c659b553f-a2b91229-e3a2759c",
+        "JWT_KEY": "89ypq34tyncty89p6677"
+    }
+}
