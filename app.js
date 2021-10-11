@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const userRoutes = require('./api/routes/users');
-const rideRoutes = require('./api/routes/rides');
+const nftRoutes = require('./api/routes/nfts');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/test');
 
 // Routes which should handle requests... These are middlewares:
 app.use('/users', userRoutes);
-app.use('/rides', rideRoutes);
+app.use('/nfts', nftRoutes);
 
 // This, too, is middleware
 app.use((req, res, next) => {

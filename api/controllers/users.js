@@ -10,7 +10,7 @@ const User = require('../models/user');
 
 exports.users_get_all = (req, res, next) => {
     User.find()
-    .select('_id username bio email')//rides 
+    .select('_id username content_owned content_sold')//bio email
     .exec()
     .then( docs => {
         const response = {
@@ -19,8 +19,10 @@ exports.users_get_all = (req, res, next) => {
                 return {
                     _id: doc._id,
                     username: doc.username,
-                    bio: doc.bio,
-                    email: doc.email,
+                    //bio: doc.bio,
+                    //email: doc.email,
+                    content_owned: doc.content_owned,
+                    content_sold: doc.content_sold,
                     request: {
                         type: 'GET, PATCH, DELETE',
                         url: 'http://localhost:3000/users' + doc._id
@@ -52,7 +54,7 @@ exports.users_signup = (req, res, next) => {
                     })
                 } else {
                     return res.status(409).json({
-                        message: "Username is taken."
+                        message: "Account already in use." //"Username is taken."
                     })
                 };
             });
@@ -73,10 +75,10 @@ exports.users_signup = (req, res, next) => {
                         expiresIn: "24h"})
 
                     const data = {
-                        from: 'noreply@roman.com',
+                        from: 'noreply@instagramtonft.com', //.io ?
                         to: req.body.email,
                         subject: 'New Account Verification',
-                        text: `Thank you for joining Roman. Please visit this link to activate your account: http://10.0.2.2:3000/users/activate_account/?token=${token}`
+                        text: `Thank you for your involvement with InstaToNFT. Please visit this link to activate your account: http://10.0.2.2:3000/users/activate_account/?token=${token}`
                     };
                     mg.messages().send(data, function (error, body) {
                         if (error) {
@@ -92,9 +94,10 @@ exports.users_signup = (req, res, next) => {
                     const user = new User({
                         _id: userId, //new mongoose.Types.ObjectId(),
                         username: req.body.username,
-                        bio: req.body.bio,
+                        //bio: req.body.bio,
                         email: req.body.email,
                         password: hash,
+                        //content_owned: ... should immediately be the minted nfts
                         active: false //TODO: 1) handle the case for the email getting lost so another can be sent
                                       // 2) delete user from db if active is still false after 24hrs
                     });
@@ -195,14 +198,16 @@ exports.users_activate_account = (req, res, next) => {
 exports.users_get_user = (req, res, next) => {
     const id = req.params.userId;
     User.findById(id)
-    .select('_id username bio email')//rides
+    .select('_id username content_owned content_sold')//bio email')//rides
     .exec()
     .then(doc => {
         if (doc) {
         const response = {
             _id: doc._id,
             username: doc.username,
-            bio: doc.bio,
+            //bio: doc.bio,
+            content_owned: doc.content_owned,
+            content_sold: doc.content_sold,
             email: doc.email,
             //rides: doc.rides,
             //account_creation: doc._id.getTimestamp(),
@@ -249,6 +254,7 @@ exports.users_patch_user = (req, res, next) => {
     });
 };
 
+//SHOULD MAYBE BE LOGIN WITH ETH SIGNATURE??
 exports.users_login = (req, res, next) => {
     User.find({email: req.body.email})//could(should) use findOne
     .select('active password username')
