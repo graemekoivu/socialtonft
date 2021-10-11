@@ -1,7 +1,7 @@
 {
-  "name": "roman",
+  "name": "instagramtonft",
   "version": "1.0.0",
-  "description": "A social bike traffic app.",
+  "description": "Easily mint your Instagram content and sell as non-fungible tokens.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,14 +10,14 @@
   "author": "Graeme Koivu",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^2.0.1",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.5.1",
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.9.18",
     "morgan": "^1.10.0",
-    "multer": "^1.4.2"
+    "multer": "^1.4.3"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"
