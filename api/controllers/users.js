@@ -78,7 +78,7 @@ exports.users_signup = (req, res, next) => {
                         from: 'noreply@instagramtonft.com', //.io ?
                         to: req.body.email,
                         subject: 'New Account Verification',
-                        text: `Thank you for your involvement with InstaToNFT. Please visit this link to activate your account: http://10.0.2.2:3000/users/activate_account/?token=${token}`
+                        text: `Thank you for your involvement with InstaToNFT. Please visit this link to activate your account: http://localhost:3000/users/activate_account/?token=${token}` //previously (for use w android app) "http://10.0.2.2:3000/..."
                     };
                     mg.messages().send(data, function (error, body) {
                         if (error) {

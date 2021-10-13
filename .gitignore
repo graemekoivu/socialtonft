@@ -130,3 +130,5 @@ dmypy.json
 
 # ignores added by me
 node_modules/
+.env
+cert/

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Example</title>
+        <script type="text/javascript">
+        function setupInsta(){
+	    let appId = "914052029523165";
+	    let redUri = window.location.origin;//+ "/insta";
+	    let url = `https://api.instagram.com/oauth/authorize?client_id=${appId}&redirect_uri=${redUri}&scope=user_profile,user_media&response_type=code`;
+	    window.open(url, "_blank").focus();
+        }
+        </script>
+    </head>
+    <body>
+        <!--<script>
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId      : '579980893122477',
+                xfbml      : true,
+                version    : 'v12.0'
+              });
+              FB.AppEvents.logPageView();
+            };
+          
+            (function(d, s, id){
+               var js, fjs = d.getElementsByTagName(s)[0];
+               if (d.getElementById(id)) {return;}
+               js = d.createElement(s); js.id = id;
+               js.src = "https://connect.facebook.net/en_US/sdk.js";
+               fjs.parentNode.insertBefore(js, fjs);
+             }(document, 'script', 'facebook-jssdk'));
+          </script>-->
+        <p>This is an example of a simple HTML page with one paragraph.</p>
+        <input type = "button" onclick="setupInsta()" value = "Create">
+        <button>Collect</button>
+    </body>
+</html>
