@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const userRoutes = require('./api/routes/users');
 const nftRoutes = require('./api/routes/nfts');
+const displayRoutes = require('./api/routes/display');
 
 require('dotenv').config();
 
@@ -18,10 +19,17 @@ mongoose.connect('mongodb://localhost:27017/test');
 // Routes which should handle requests... These are middlewares:
 app.use('/users', userRoutes);
 app.use('/nfts', nftRoutes);
+app.use('/display', displayRoutes);
 
 app.get('/', (req, res) => {
     res.sendFile('home.html', { root: '.' });
 });
+/*app.get('/:code', (req, res) => {
+    const code = req.query.code;
+    console.log(code);
+    //console.log(req.params.code);
+    res.sendFile('gramdisplay.html', { root: '.'});
+});*/
 
 // This, too, is middleware
 app.use((req, res, next) => {

@@ -18,7 +18,8 @@
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.9.18",
     "morgan": "^1.10.0",
-    "multer": "^1.4.3"
+    "multer": "^1.4.3",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "@types/mongoose": "^5.11.97",
