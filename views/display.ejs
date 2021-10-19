@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Example 2</title>
+        <!--<script type="text/javascript">
+        data.foreach()
+        </script>-->
+    </head>
+    <body>
+        <% if (data.length > 0) { %>
+            <% data.forEach( datum => { %>
+                <p><%= datum.media_url %></p>
+                <img src=<%= datum.media_url %> width="512" height="512">
+            <% }) %>
+        <% } %>
+        <!--<p><%- data[0]['media_url'] %></p>-->
+    </body>
+</html>

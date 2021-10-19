@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({extended: false})); //probably just replace with 
 app.use(bodyParser.json()); //and here too same as above
 
 mongoose.connect('mongodb://localhost:27017/test');
+app.set('view engine', 'ejs');
 
 // Routes which should handle requests... These are middlewares:
 app.use('/users', userRoutes);
@@ -22,7 +23,7 @@ app.use('/nfts', nftRoutes);
 app.use('/display', displayRoutes);
 
 app.get('/', (req, res) => {
-    res.sendFile('home.html', { root: '.' });
+    res.render('home', {root: '.'});
 });
 /*app.get('/:code', (req, res) => {
     const code = req.query.code;
