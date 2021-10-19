@@ -2,17 +2,52 @@
 <html>
     <head>
         <title>Example 2</title>
-        <!--<script type="text/javascript">
-        data.foreach()
-        </script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(function(){
+                var selectedImgsArr = [];
+                $("img").click(function() {
+                    //selectedImgsArr.push($(this).attr("src"));
+
+                    if ($(this).hasClass("selected")) {
+                        $(this).removeClass("selected")
+                        $(this).css({"border": "10px solid white", "border-radius": ""});
+                        //remove currently selected element from array... (filter() may not work for internet explorer <9)
+                        selectedImgsArr = selectedImgsArr.filter((element) => { return element !== $(this).attr("src")});
+                        //selectedImgsArr.pop($(this).attr("src"));
+                    } else {
+                        $(this).addClass("selected")
+                        $(this).css({"border": "10px solid aquamarine", "border-radius": "10px"});
+                        selectedImgsArr.push($(this).attr("src"));
+                    }
+                    //alert(selectedImgsArr);
+                    //console.log(selectedImgsArr);
+                })
+            });
+        </script>
+        <style>
+            .wrapper{
+                display:grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap:1em;
+                justify-items: center;
+                align-items: center;
+            }
+            .image{
+                border: 10px solid white;
+            }
+        </style>
     </head>
     <body>
-        <% if (data.length > 0) { %>
-            <% data.forEach( datum => { %>
-                <p><%= datum.media_url %></p>
-                <img src=<%= datum.media_url %> width="512" height="512">
-            <% }) %>
-        <% } %>
-        <!--<p><%- data[0]['media_url'] %></p>-->
+        <div class="wrapper">
+            <% if (data.length > 0) { %>
+                <% data.forEach( datum => { %>
+                        <div>
+                            <!--<p><%= datum.media_url %></p>-->
+                            <img class="image" src=<%= datum.media_url %> width="256" height="256">
+                        </div>
+                <% }) %>
+            <% } %>
+        </div>
     </body>
 </html>
