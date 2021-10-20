@@ -1,5 +1,6 @@
 const Nft = require('../models/nft');
 const mongoose = require('mongoose');
+const axios = require('axios').default;
 
 /*exports.pages_get_all = (req, res, next) => {
     Ride.find()
@@ -37,6 +38,46 @@ const mongoose = require('mongoose');
 };*/
 
 exports.nfts_post_nft = (req, res, next) => {
+    console.log(req.body.token);
+    console.log(req.body.urls);
+    axios.get(`https://graph.instagram.com/me/media?fields=username&access_token=${req.body.token}`) //username,media_url
+    .then(response => {
+        const makerId = response['data']['data'][0]['username'];//THIS IS GROSS / why is it giving {username, id} for every one of the user's posts?
+        //console.log(response['data']['data'][0]['username']);
+        console.log(makerId);
+        req.body.urls.forEach(source_url => {
+        const nft = new Nft({
+            _id: new mongoose.Types.ObjectId(),
+            makerId: makerId, //changed to "userData" from "body" on 6/6/20 because decoded token holds this value (from check-auth.js)
+            ownerId: makerId,//...
+            src: source_url
+            //startDateTime: req.body.startDateTime,
+            //path: req.body.path
+            //settings: [req.body.settings]
+        });
+        nft.save()
+            .then(result => {
+                console.log(result);
+                /*res.status(201).json({
+                    message: "Handled a POST request to /nfts",
+                    createdPage: result
+                })*///LOL... we do need a response tho -- commented out above because of the response issue that "Cannot set headers after they are sent to the client"
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+
+        })//........also should update the user's owned content ?
+    }).catch(err => {
+        console.log(err);
+    })
+};
+
+/*exports.nfts_post_nft = (req, res, next) => {
+    
     const nft = new Nft({
         _id: new mongoose.Types.ObjectId(),
         makerId: req.userData.makerId, //changed to "userData" from "body" on 6/6/20 because decoded token holds this value (from check-auth.js)
@@ -59,7 +100,7 @@ exports.nfts_post_nft = (req, res, next) => {
                 error: err
             });
         });
-};
+};*/
 
 exports.nfts_get_nft = (req, res, next) => {
     const id = req.params.nftId;

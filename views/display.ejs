@@ -3,18 +3,17 @@
     <head>
         <title>Example 2</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
             $(function(){
                 var selectedImgsArr = [];
                 $("img").click(function() {
-                    //selectedImgsArr.push($(this).attr("src"));
 
                     if ($(this).hasClass("selected")) {
                         $(this).removeClass("selected")
                         $(this).css({"border": "10px solid white", "border-radius": ""});
                         //remove currently selected element from array... (filter() may not work for internet explorer <9)
                         selectedImgsArr = selectedImgsArr.filter((element) => { return element !== $(this).attr("src")});
-                        //selectedImgsArr.pop($(this).attr("src"));
                     } else {
                         $(this).addClass("selected")
                         $(this).css({"border": "10px solid aquamarine", "border-radius": "10px"});
@@ -23,6 +22,26 @@
                     //alert(selectedImgsArr);
                     //console.log(selectedImgsArr);
                 })
+                $("button").click(function() {
+                    if (selectedImgsArr.length <= 0) {
+                        alert("No photos selected");
+                    } else {
+                        const post_url = "https://localhost:3443/nfts"
+                        const options = {
+                            token: "<%= token %>",
+                            urls: selectedImgsArr
+                        }
+                        console.log(options.token);
+                        axios.post(post_url, options)
+                        .then(response => {
+                            alert(response);
+                        }).catch(err => {
+                            console.log(err);
+                        })
+                        //alert("attempted to submit: " + selectedImgsArr);
+                    }
+                    return true;
+                });
             });
         </script>
         <style>
@@ -39,9 +58,11 @@
         </style>
     </head>
     <body>
+        <h1>Select the photos you want to mint as NFT</h1>
+        <h2><%= token %></h2>
         <div class="wrapper">
-            <% if (data.length > 0) { %>
-                <% data.forEach( datum => { %>
+            <% if (data.data.length > 0) { %>
+                <% data.data.forEach( datum => { %>
                         <div>
                             <!--<p><%= datum.media_url %></p>-->
                             <img class="image" src=<%= datum.media_url %> width="256" height="256">
@@ -49,5 +70,6 @@
                 <% }) %>
             <% } %>
         </div>
+        <button>Submit</button>
     </body>
 </html>

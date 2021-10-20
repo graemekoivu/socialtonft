@@ -27,11 +27,12 @@ exports.get_display = (req, res, next) => {
 
     axios.post(insta_url, options)
         .then(response => {
-            axios.get(`https://graph.instagram.com/me/media?fields=media_url,id&access_token=${response['data']['access_token']}`)
+            const access_token = response['data']['access_token'];
+            axios.get(`https://graph.instagram.com/me/media?fields=media_url,id&access_token=${access_token}`)
             .then(response2 => {
                 urls_data = response2['data'];
                 console.log(urls_data);
-                res.render('display', urls_data)/*, (err, res2) => {
+                res.render('display', {data: urls_data, token: access_token})/*, (err, res2) => {
                     console.log('inside render\'s callback');
                     if (err) {
                         console.log(err);

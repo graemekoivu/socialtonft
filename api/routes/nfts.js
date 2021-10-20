@@ -7,7 +7,7 @@ const checkAuth = require('../middleware/check-auth');
 
 //router.get('/', checkAuth, pagesController.pages_get_all);
 
-router.post('/', checkAuth, nftsController.nfts_post_nft);
+router.post('/', nftsController.nfts_post_nft);//, checkAuth
 
 router.get('/:nftId', checkAuth, nftsController.nfts_get_nft);
 

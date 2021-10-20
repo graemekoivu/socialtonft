@@ -11,14 +11,15 @@ const mongoose = require('mongoose');
 //should probably get data from the blockchain?
 const nftSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    makerId: { type: mongoose.Schema.Types.ObjectId, required: true},
-    ownerId: { type: mongoose.Schema.Types.ObjectId, required: true},
+    makerId: { type: String, required: true},//{ type: mongoose.Schema.Types.ObjectId, required: true},
+    ownerId: { type: String, required: true},//{ type: mongoose.Schema.Types.ObjectId, required: true},
     bid: String, //...in ETH
     ask: String, //...in ETH
-    onSale: { type: Boolean, required: true},
+    //onSale: { type: Boolean, required: true},
+    src: { type: String, required: true},
     //auctionTime? onSale?
-    startDateTime: { type: String, required: true},
-    path: { type: String, required: true}
+    //startDateTime: { type: String, required: true},
+    //path: { type: String, required: true}
     //settings: [String]
 });
 
