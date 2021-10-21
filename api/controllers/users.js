@@ -78,11 +78,11 @@ exports.users_signup = (req, res, next) => {
                         from: 'noreply@instagramtonft.com', //.io ?
                         to: req.body.email,
                         subject: 'New Account Verification',
-                        text: `Thank you for your involvement with InstaToNFT. Please visit this link to activate your account: http://localhost:3000/users/activate_account/?token=${token}` //previously (for use w android app) "http://10.0.2.2:3000/..."
+                        text: `Thank you for your involvement with InstaToNFT. Please visit this link to activate your account: https://localhost:3443/users/activate_account/?token=${token}` //previously (for use w android app) "http://10.0.2.2:3000/..."
                     };
                     mg.messages().send(data, function (error, body) {
                         if (error) {
-                            return res.status(500).json({
+                            return res.status(500).json({ //!!!this can cause an error (sending multiple responses) if it occurs!!!
                                 error: error
                             })
                         }
@@ -197,8 +197,10 @@ exports.users_activate_account = (req, res, next) => {
 
 exports.users_get_user = (req, res, next) => {
     const id = req.params.userId;
-    User.findById(id)
-    .select('_id username content_owned content_sold')//bio email')//rides
+    User.findOne({"username": id})//used to be User.findById but not sure why ?? (21/10/21) -actually that might make more sense??
+    .select('_id username content_owned content_created')//bio email')//rides
+    .populate('content_owned', 'src')
+    .populate('content_created', 'src')
     .exec()
     .then(doc => {
         if (doc) {
@@ -207,7 +209,7 @@ exports.users_get_user = (req, res, next) => {
             username: doc.username,
             //bio: doc.bio,
             content_owned: doc.content_owned,
-            content_sold: doc.content_sold,
+            content_created: doc.content_created,
             email: doc.email,
             //rides: doc.rides,
             //account_creation: doc._id.getTimestamp(),
@@ -223,7 +225,8 @@ exports.users_get_user = (req, res, next) => {
             }
         }
         console.log(doc);
-        res.status(200).json(response);
+        res.render('userpage', {username: doc.username, content_owned: doc.content_owned, content_sold: doc.content_sold});
+        //res.status(200).json(response);
         } else {
             res.status(404).json({
                 message: 'User not found'
@@ -240,7 +243,7 @@ exports.users_patch_user = (req, res, next) => {
     const id = req.params.userId
     const updateOps = {};
     for (const ops of req.body) { //now we want request body to be in form: [{"propName": "xyz_name", "value": "abc_value"}]
-        updateOps[ops.propName] = ops.value //...make sure to restrict user to only update certain properties (i.e. bio, username?, rides)
+        updateOps[ops.propName] = ops.value //...make sure to restrict user to only update certain properties (i.e. bio, username?)
     }
     User.update({_id: id}, { $set: updateOps})
     .exec()

@@ -1,4 +1,5 @@
 const Nft = require('../models/nft');
+const User = require('../models/user');
 const mongoose = require('mongoose');
 const axios = require('axios').default;
 
@@ -38,13 +39,15 @@ const axios = require('axios').default;
 };*/
 
 exports.nfts_post_nft = (req, res, next) => {
-    console.log(req.body.token);
+    console.log(req.body.token); //TOKEN SHOULD PROBABLY BE PASSED IN HEADER, but header will also include jwt??
     console.log(req.body.urls);
     axios.get(`https://graph.instagram.com/me/media?fields=username&access_token=${req.body.token}`) //username,media_url
     .then(response => {
         const makerId = response['data']['data'][0]['username'];//THIS IS GROSS / why is it giving {username, id} for every one of the user's posts?
         //console.log(response['data']['data'][0]['username']);
         console.log(makerId);
+        var i = 0;
+        var nft_arr = [];
         req.body.urls.forEach(source_url => {
         const nft = new Nft({
             _id: new mongoose.Types.ObjectId(),
@@ -55,25 +58,37 @@ exports.nfts_post_nft = (req, res, next) => {
             //path: req.body.path
             //settings: [req.body.settings]
         });
-        nft.save()
+        nft_arr[i] = nft;
+        i = i+1;
+        });
+        Nft.insertMany(nft_arr)
+        .then(result => {
+            var nfts_ids_arr = [];
+            result.forEach(nft_doc => {
+                nfts_ids_arr.push(nft_doc._id)
+            })
+            User.updateOne({username: makerId}, { $push: {content_created: {$each: nfts_ids_arr}, content_owned: {$each: nfts_ids_arr}}}) //updateOne updates first doc that matches the condition
+            .exec()
             .then(result => {
                 console.log(result);
-                /*res.status(201).json({
-                    message: "Handled a POST request to /nfts",
-                    createdPage: result
-                })*///LOL... we do need a response tho -- commented out above because of the response issue that "Cannot set headers after they are sent to the client"
             })
             .catch(err => {
                 console.log(err);
-                res.status(500).json({
-                    error: err
-                });
+                res.status(500).json({error: err});
             });
 
-        })//........also should update the user's owned content ?
-    }).catch(err => {
-        console.log(err);
-    })
+            console.log(result);
+            res.status(201).json({
+                message: "Handled a POST request to /nfts and updated relevant user's content created/owned",
+                createdPage: result
+            })
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+    });
 };
 
 /*exports.nfts_post_nft = (req, res, next) => {

@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     password: {type: String, required: true}, //probably replace this via sign in with eth signature
     active: Boolean,
     content_owned: [{type: mongoose.Schema.Types.ObjectId, ref: 'nft'}],
-    content_sold: [{type: mongoose.Schema.Types.ObjectId, ref: 'nft'}]
+    content_created: [{type: mongoose.Schema.Types.ObjectId, ref: 'nft'}]
     //rides: [{type: mongoose.Schema.Types.ObjectId, ref: 'rides'}]
 });// <-- after the curly brace, consider adding , {timestamps:true} 
 //CONSIDER ADDING REQUIREMENTS (to the values) SUCH AS: trim, max, lowercase, etc...
