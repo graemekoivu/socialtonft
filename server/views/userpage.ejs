@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Example 3</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            $(function(){
+                $("img").click(function() {
+                    alert("clicked but doing nothing");
+                })
+                /*$("button").click(function() {
+                    alert("button clicked do nothing");
+                });*/
+            
+                
+
+            });
+        </script>
+        <style>
+            .wrapper{
+                display:grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap:1em;
+                justify-items: center;
+                align-items: center;
+            }
+            .image{
+                border: 10px solid white;
+            }
+            .tablink {
+                background-color: #555;
+                color: white;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                font-size: 17px;
+                width: 50%;
+            }
+
+            .tablink:hover {
+                background-color: #777;
+            }
+
+            .tabcontent {
+                color: white;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap:1em;
+                justify-items: center;
+                align-items: center;
+                padding: 100px 20px;
+                height: 100%;
+            }
+            
+            #Content_owned {background-color: blue;}
+            #Content_created {background-color: orange;}
+        </style>
+    </head>
+    <body>
+
+        <h1><%= username %></h1>
+        <h2>placeholder subheader text</h2>
+        <button class="tablink" onclick="openPage('Content_owned', this, 'blue')" id="defaultOpen">Content Owned</button>
+        <button class="tablink" onclick="openPage('Content_created', this, 'orange')">Content Created</button>
+
+        <div id="Content_created" class="wrapper tabcontent">
+            <% if (content_created.length > 0) { %>
+                <% content_created.forEach( content => { %>
+                        <div>
+                            <!--<p><%= content.src %></p>-->
+                            <img class="image" src=<%= content.src %> width="256" height="256">
+                        </div>
+                <% }) %>
+            <% } %>
+        </div>
+
+        <div id="Content_owned" class="wrapper tabcontent">
+            <% if (content_owned.length > 0) { %>
+                <% content_owned.forEach( content => { %>
+                        <div>
+                            <!--<p><%= content.src %></p>-->
+                            <img class="image" src=<%= content.src %> width="256" height="256">
+                        </div>
+                <% }) %>
+            <% } %>
+        </div>
+        <button>Do nothing</button>
+
+        <script>
+            function openPage(pageName, elmnt, color) {
+                // Hide all elements with class="tabcontent" by default */
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+
+                // Remove the background color of all tablinks/buttons
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].style.backgroundColor = "";
+                }
+
+                // Show the specific tab content
+                document.getElementById(pageName).style.display = "grid";
+
+                // Add the specific color to the button used to open the tab content
+                elmnt.style.backgroundColor = color;
+            }
+
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click(); 
+        </script>
+
+    </body>
+</html>
+
+<!--<style>
+    .tablink {
+        background-color: #555;
+        color: white;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-size: 17px;
+        width: 50%;
+    }
+
+    .tablink:hover {
+        background-color: #777;
+    }
+
+    #Content_created {background-color: aqua;}
+    #Content_owned {background-color: violet;}
+
+    <div id="Content_owned" class="tabcontent">
+        <h3>Content_owned</h3>
+        <p>Here's where owned photos would be</p>
+    </div>
+
+    <div id="Content_created" class="tabcontent">
+        <h3>Content_created</h3>
+        <p>Here's where created photos would be</p>
+    </div>
+</style>-->

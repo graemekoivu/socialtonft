@@ -197,7 +197,7 @@ exports.users_activate_account = (req, res, next) => {
 
 exports.users_get_user = (req, res, next) => {
     const id = req.params.userId;
-    User.findOne({"username": id})//used to be User.findById but not sure why ?? (21/10/21) -actually that might make more sense??
+    User.findById(id)//One({"username": id})//used to be User.findById but not sure why ?? (21/10/21) -actually that might make more sense??
     .select('_id username content_owned content_created')//bio email')//rides
     .populate('content_owned', 'src')
     .populate('content_created', 'src')
@@ -225,7 +225,7 @@ exports.users_get_user = (req, res, next) => {
             }
         }
         console.log(doc);
-        res.render('userpage', {username: doc.username, content_owned: doc.content_owned, content_sold: doc.content_sold});
+        res.render('userpage', {username: doc.username, content_owned: doc.content_owned, content_created: doc.content_created});
         //res.status(200).json(response);
         } else {
             res.status(404).json({
