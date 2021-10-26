@@ -1,16 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Head msg="Welcome to SocialToNFT!"></Head>
+    <HomeTabs v-if="!userpage"></HomeTabs>
+    <Tabs v-else></Tabs>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Head from './components/Head.vue'
+import HomeTabs from './components/HomeMenu.vue'
+import Tabs from './components/Tabs.vue'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      userpage: false
+    }
+  },
   components: {
-    HelloWorld
-  }
+    Head,
+    HomeTabs,
+    Tabs
+  },
 }
 </script>
 
