@@ -44,7 +44,6 @@ exports.nfts_post_nft = (req, res, next) => {
     axios.get(`https://graph.instagram.com/me/media?fields=username&access_token=${req.body.token}`) //username,media_url
     .then(response => {
         const makerId = response['data']['data'][0]['username'];//THIS IS GROSS / why is it giving {username, id} for every one of the user's posts?
-        //console.log(response['data']['data'][0]['username']);
         console.log(makerId);
         var i = 0;
         var nft_arr = [];
