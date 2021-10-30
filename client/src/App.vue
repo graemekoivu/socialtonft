@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Navigation></Navigation>
     <Head msg="Welcome to SocialToNFT!"></Head>
     <HomeTabs v-if="!userpage"></HomeTabs>
     <Tabs v-else></Tabs>
@@ -8,6 +9,7 @@
 </template>
 
 <script>
+import Navigation from './components/Navigation.vue'
 import Head from './components/Head.vue'
 import HomeTabs from './components/HomeMenu.vue'
 import Tabs from './components/Tabs.vue'
@@ -27,6 +29,7 @@ export default {
     }
   },
   components: {
+    Navigation,
     Head,
     HomeTabs,
     Tabs,
@@ -51,6 +54,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0;
 }
 </style>

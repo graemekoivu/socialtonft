@@ -8,12 +8,26 @@ class APIService {
             try {
                 axios.get(`https://localhost:3443/display/?code=${code}`)
                 .then(res => {
-                    console.log(res.data.data);
-                    data = res.data.data;
+                    data = res.data;
+                    resolve(data);
                 });
-                resolve(
+                /*resolve(
+                    console.log(data),
                     data //how should the data be resolved...
-                );
+                );*/
+            } catch(err) {
+                reject(err);
+            }
+        })
+    }
+
+    static postNFTs(postURL, options) {
+        return new Promise((resolve, reject) => {
+            try {
+                axios.post(postURL, options)
+                .then(res => {
+                    resolve(res);
+                });
             } catch(err) {
                 reject(err);
             }
