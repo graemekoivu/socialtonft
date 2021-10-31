@@ -6,14 +6,21 @@
             <ul v-show="!mobile" class="navigation">
                 <li><a href="#create" class="link">Create</a></li>
                 <li><a href="#collect" class="link">Collect</a></li>
-                <button onclick="" style="background-color: rgba(127, 255, 212, 0.836);">
-                <i class="fas fa-wallet" style="padding: 7px; font-size: 32px; color: rgba(255, 71, 200, 0.822);"></i>
+                <button onclick="" style="margin-left: 4px; padding: 0px; background-color: rgba(127, 255, 212, 0.836);">
+                <i class="fas fa-wallet" style="padding: 6px; font-size: 32px; color: rgba(255, 71, 200, 0.822);"></i>
                 </button>
             </ul>
-            <a href="javascript:void(0);" @click="toggleMobileNav" v-show="mobile" class="icon" :class="{'icon-active': mobileNav}" onclick="myFunction()">
-                <i class="fa fa-bars"></i>
-            </a>
+            <div v-show="mobile" class="icon" style="background-color: rgba(255, 71, 200, 0.822);">
+                <i @click="toggleMobileNav" class="fa fa-bars" :class="{'icon-active': mobileNav}" style="color: rgba(127, 255, 212, 0.836);"></i>
+            </div>
         </nav>
+        <ul v-show="mobileNav" class="drop-navigation">
+            <li><a href="#create" class="link">Create</a></li>
+            <li><a href="#collect" class="link">Collect</a></li>
+            <button onclick="" style="padding: 0px; background-color: rgba(127, 255, 212, 0.836);">
+            <i class="fas fa-wallet" style="padding: 6px; font-size: 32px; color: rgba(255, 71, 200, 0.822);"></i>
+            </button>
+        </ul>
     </header>
 </template>
 
@@ -30,14 +37,25 @@
                 windowWidth: null
             }
         },
+        created() {
+            window.addEventListener('resize', this.checkScreen);
+            this.checkScreen();
+        },
         methods: {
-            myFunction() {
-                var x = document.getElementById("theTopnav");
-                if (x.className === "topnav") {
-                    x.className += " responsive";
-                } else {
-                    x.className = "topnav";
+            toggleMobileNav() {
+                this.mobileNav = !this.mobileNav;
+                console.log(this.mobileNav);
+            },
+            checkScreen() {
+                this.windowWidth = window.innerWidth;
+                if (this.windowWidth < 900) {
+                    this.mobile = true;
+                    return;
                 }
+                this.mobile = false;
+                this.mobileNav = false;
+                console.log(this.mobileNav);
+                return;
             }
         }
     }
@@ -62,10 +80,10 @@
         text-align: center;
         justify-content: space-between;
         padding: 8px 0;
-        width: 80%;
+        width: 90%;
         margin: 0 auto;
-        @media (min-width: 1140px) {
-            max-width: 1140px;
+        @media (min-width: 900px) {
+            max-width: 900px;
         }
     }
     .topnav a {
@@ -76,6 +94,7 @@
         padding: 14px 16px;
         text-decoration: none;
         font-size: 17px;
+        width: 60px;
     }
     input {
         width: 400px;
@@ -89,40 +108,23 @@
         background-color: rgb(90, 100, 240);
         color: white;
     }
-    .topnav .icon {
-        display: none;
-        color: white;
-    }
     .navigation {
+        margin: 0;
         list-style-type: none;
         display: flex;
         align-items: center;
         justify-content: flex-end;
     }
-    i {
+    .topnav .icon {
         display: flex;
-        align-items: center;
-        justify-content: flex-end;
+        font-size: 32px;
+        padding: 7px 10px;
+        margin-left: 40px;
     }
-    @media screen and (max-width: 600px) {
-        .topnav a:not(:first-child) {display: none;}
-        .topnav a.icon {
-            float: right;
-            display: block;
-        }
-    }
-
-    @media screen and (max-width: 600px) {
-        .topnav.responsive {position: relative;}
-        .topnav.responsive .icon {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-        .topnav.responsive a {
-            float: none;
-            display: block;
-            text-align: left;
-        }
+    .drop-navigation {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        list-style-type: none;
     }
 </style>

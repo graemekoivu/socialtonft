@@ -1,7 +1,7 @@
 <template>
     <div>
-        <button class="tablink" @click="setupInsta" id="defaultOpen">Create</button>
-        <button class="tablink" @click="collectClicked">Collect</button>
+        <button class="tablink" style="background-color: rgba(127, 255, 212, 0.836); color: black;" @click="setupInsta" id="defaultOpen">Create</button>
+        <button class="tablink" style="background-color: rgba(255, 71, 200, 0.822)" @click="collectClicked">Collect</button>
     </div>
 </template>
 
@@ -24,7 +24,6 @@
 
 <style scoped>
     .tablink {
-        background-color: rgb(78, 129, 158);
         color: white;
         float: left;
         border: none;
