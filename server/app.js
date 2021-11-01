@@ -23,7 +23,7 @@ mongoose.connect('mongodb://localhost:27017/test');
 // Routes which should handle requests... These are middlewares:
 app.use('/users', userRoutes);
 app.use('/nfts', nftRoutes);
-app.use('/display', displayRoutes);
+app.use('/mint', displayRoutes);
 
 const path = require('path');
 var public = path.join(__dirname, '/public/');

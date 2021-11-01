@@ -35,6 +35,7 @@ exports.get_display = (req, res, next) => {
             .then(response2 => {
                 urls_data = response2['data'];
                 console.log(urls_data);
+                //res.sendFile(__dirname + '../../public/index')
                 res.status(200).json({urls_data, access_token});
                 /*res.render('index.html', {data: urls_data, token: access_token})/*, (err, res2) => {
                     console.log('inside render\'s callback');
