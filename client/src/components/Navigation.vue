@@ -1,12 +1,13 @@
 <template>
     <header class="topnav" id="theTopnav">
         <nav>
-            <a href="#home" class="active" style="margin-right: 40px;">Home</a>
+            <router-link class="link" :to="{name: 'Home'}" style="margin-right: 40px;">Home</router-link>
             <input type="text" placeholder="search for users or wallet addresses">
             <ul v-show="!mobile" class="navigation">
-                <li><a href="#create" class="link">Create</a></li>
-                <li><a href="#collect" class="link">Collect</a></li>
-                <button onclick="" style="margin-left: 4px; padding: 0px; background-color: rgba(127, 255, 212, 0.836);">
+                <li><router-link class="link" :to="{name: 'Create'}">Create</router-link></li>
+                <li><router-link class="link" :to="{name: 'Collect'}">Collect</router-link></li>
+                <li v-if="userWalletAddr"><router-link class="link" :to="{path: '/account/' + userWalletAddr}">{{ userWalletAddr }}</router-link></li>
+                <button @click="signInOutMetamask" :disabled="!signIn" style="margin-left: 4px; padding: 0px; background-color: rgba(127, 255, 212, 0.836);">
                 <i class="fas fa-wallet" style="padding: 6px; font-size: 32px; color: rgba(255, 71, 200, 0.822);"></i>
                 </button>
             </ul>
@@ -15,16 +16,14 @@
             </div>
         </nav>
         <ul v-show="mobileNav" class="drop-navigation">
-            <li><a href="#create" class="link">Create</a></li>
-            <li><a href="#collect" class="link">Collect</a></li>
-            <button onclick="" style="padding: 0px; background-color: rgba(127, 255, 212, 0.836);">
+            <li><router-link class="link" :to="{name: 'Create'}">Create</router-link></li>
+            <li><router-link class="link" :to="{name: 'Collect'}">Collect</router-link></li>
+            <button onclick="signInOutMetamask" :disabled="!signIn" style="padding: 0px; background-color: rgba(127, 255, 212, 0.836);">
             <i class="fas fa-wallet" style="padding: 6px; font-size: 32px; color: rgba(255, 71, 200, 0.822);"></i>
             </button>
         </ul>
     </header>
 </template>
-
-
 
 <script>
 
@@ -34,12 +33,24 @@
             return {
                 mobile: null,
                 mobileNav: null,
-                windowWidth: null
+                windowWidth: null,
+                signIn: null,
+                userWalletAddr: null
             }
         },
         created() {
             window.addEventListener('resize', this.checkScreen);
             this.checkScreen();
+        },
+        mounted() {
+            console.log('mounted')
+            this.toggleSignIn();
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (this.userWalletAddr) {
+                    this.userWalletAddr = null;
+                } else { this.userWalletAddr = accounts[0]}
+            })
+            //window.addEventListener('DOMContentLoaded', this.toggleSignIn);
         },
         methods: {
             toggleMobileNav() {
@@ -54,8 +65,32 @@
                 }
                 this.mobile = false;
                 this.mobileNav = false;
-                console.log(this.mobileNav);
+                //console.log(this.mobileNav);
                 return;
+            },
+            toggleSignIn() {
+                if (!window.ethereum) {
+                    console.log('checkpoint')
+                    //disable SignIn button
+                    this.signIn = false;
+                    return false;
+                } else {
+                    console.log('check2')
+                    this.signIn = true;
+                    return true;
+                }
+            },
+            async signInOutMetamask() {
+                if (!this.userWalletAddr) {
+                    //sign in
+                    const accounts = await window.ethereum.request({method: 'eth_requestAccounts'})
+                    .catch(err => {
+                        console.error(err.message);
+                        return
+                    });
+                    if (!accounts) {return}
+                    this.userWalletAddr = accounts[0]
+                } else { this.userWalletAddr = null } //sign out
             }
         }
     }
@@ -94,17 +129,17 @@
         padding: 14px 16px;
         text-decoration: none;
         font-size: 17px;
-        width: 60px;
+        min-width: 60px;
     }
     input {
         width: 400px;
         font-size: 17px;
     }
-    .topnav a:hover {
+    .link:hover {
         background-color: #ddd;
         color: black;
     }
-    .topnav a.active {
+    .topnav a.router-link-active {
         background-color: rgb(90, 100, 240);
         color: white;
     }
@@ -120,6 +155,10 @@
         font-size: 32px;
         padding: 7px 10px;
         margin-left: 40px;
+    }
+    #userWalletAddr {
+        color: white;
+        padding: 14px 16px;
     }
     .drop-navigation {
         display: flex;

@@ -6,7 +6,7 @@ class APIService {
         var data;
         return new Promise((resolve, reject) => {
             try {
-                axios.get(`https://localhost:3443/display/?code=${code}`)
+                axios.get(`https://localhost:3443/mint/?code=${code}`)
                 .then(res => {
                     data = res.data;
                     resolve(data);
@@ -34,6 +34,16 @@ class APIService {
         })
     }
 
+    static getUser(username) {
+        return new Promise((resolve, reject) => {
+            try {
+                console.log(username)
+                //axios.get()
+            } catch(err) {
+                reject(err);
+            }
+        })
+    }
 }
 
 export default APIService;

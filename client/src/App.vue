@@ -1,23 +1,15 @@
 <template>
   <div>
-    <Navigation></Navigation>
-    <Head msg="Welcome to SocialToNFT!"></Head>
-    <HomeTabs v-if="!userpage"></HomeTabs>
-    <Tabs v-else></Tabs>
-    <Display v-if="display"></Display>
+    <Navigation/>
+    <router-view/>
   </div>
 </template>
 
 <script>
 import Navigation from './components/Navigation.vue'
-import Head from './components/Head.vue'
-import HomeTabs from './components/HomeMenu.vue'
-import Tabs from './components/Tabs.vue'
-import Display from './components/Display.vue'
 
 let urlParams = new URLSearchParams(window.location.search);
 const code = urlParams.get('code');
-
 export default {
   name: 'App',
   data() {
@@ -30,19 +22,15 @@ export default {
   },
   components: {
     Navigation,
-    Head,
-    HomeTabs,
-    Tabs,
-    Display
   },
   created() {
     //evaluate url params...
     if (urlParams.get('code')) {
-      this.display = true;
+      this.$router.push('/create')
     } else {
       this.display = false;
     }
-    console.log(code)
+    //console.log(code)
   }
 }
 </script>
@@ -53,7 +41,19 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #333;
-  margin-top: 0;
+  color: #2c3e50;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>

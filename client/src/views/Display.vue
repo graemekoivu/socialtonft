@@ -13,11 +13,18 @@
 
 <script>
     import APIService from '../APIService';
+    let urlParams = new URLSearchParams(window.location.search);
+    //console.log("url Params: " + urlParams);
+    //console.log("route query code: " + this.$route.query.code);
 
     export default {
         name: 'Display',
         data() {
             return {
+
+                userpage: false,
+                display: false,
+                code: '',
                 content: [],
                 selectedContent: [],
                 access_token: '',
@@ -26,9 +33,17 @@
             }
         },
         async created() {
+            //evaluate url params...
+            if (urlParams.get('code')) {
+                this.code = urlParams.get('code');
+                this.display = true;
+            } else {
+                this.display = false;
+            }
+            //console.log(this.code)
             try {
-                console.log("CODE IS HERE: " + this.$parent.code);
-                APIService.getDisplay(this.$parent.code)
+                //console.log("CODE IS HERE: " + this.code);
+                APIService.getDisplay(this.code)
                     .then((res) => {
                         this.content = res['urls_data'].data.map(obj => ({...obj, isSelected: false}));
                         this.access_token = res['access_token']
