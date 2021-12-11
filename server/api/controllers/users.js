@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const mailgun = require("mailgun-js");
-const DOMAIN = "sandbox5948218128314793830cf80b38b8d2f9.mailgun.org";
+const DOMAIN = "<prefix code here>.mailgun.org";
 const mg = mailgun({apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN});
 
 const User = require('../models/user');
